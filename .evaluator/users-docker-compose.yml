@@ -1,0 +1,104 @@
+version: '3'
+services:
+  users:
+    build: ../${CONFIG_PATH}
+    ports:
+      - "3000:${CONFIG_PORT}"
+    environment:
+      DB_NAME: monitor_users
+      DB_HOST: users_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    depends_on:
+      users_db:
+        condition: service_healthy
+  users_db:
+    image: postgres
+    environment:
+      POSTGRES_DB: monitor_users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+  routes:
+    image: ghcr.io/misw-4301-desarrollo-apps-en-la-nube/entrega1-routes:latest
+    ports:
+      - "3002:3000"
+    environment:
+      DB_NAME: monitor_routes
+      DB_HOST: routes_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      USERS_PATH: users
+      USERS_PORT: ${CONFIG_PORT}
+    depends_on:
+      routes_db:
+        condition: service_healthy
+  routes_db:
+    image: postgres
+    environment:
+      POSTGRES_DB: monitor_routes
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+  posts:
+    image: ghcr.io/misw-4301-desarrollo-apps-en-la-nube/entrega1-posts:latest
+    ports:
+      - "3001:3000"
+    environment:
+      DB_NAME: monitor_posts
+      DB_HOST: posts_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      USERS_PATH: users
+      USERS_PORT: ${CONFIG_PORT}
+    depends_on:
+      posts_db:
+        condition: service_healthy
+  posts_db:
+    image: postgres
+    environment:
+      POSTGRES_DB: monitor_posts
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+  offers:
+    image: ghcr.io/misw-4301-desarrollo-apps-en-la-nube/entrega1-offers:latest
+    ports:
+      - "3003:3000"
+    environment:
+      DB_NAME: monitor_offers
+      DB_HOST: offers_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      USERS_PATH: users
+      USERS_PORT: ${CONFIG_PORT}
+    depends_on:
+      offers_db:
+        condition: service_healthy
+  offers_db:
+    image: postgres
+    environment:
+      POSTGRES_DB: monitor_offers
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5

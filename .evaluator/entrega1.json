@@ -1,0 +1,2583 @@
+{
+	"info": {
+		"_postman_id": "daab8c45-f728-472f-b0d2-20583c8a1524",
+		"name": "Entrega 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1524525"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Reset",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users/reset",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de usuarios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);",
+									"",
+									"if(jsonData.token) {",
+									"    pm.collectionVariables.set('token', jsonData.token);",
+									"}",
+									"",
+									"tests[\"Status should be 201\"] = responseCode.code == 201;",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ravelinx\",\n    \"password\": \"123456\",\n    \"email\": \"drummerwilliam@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de usuarios que ya existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 412\"] = responseCode.code == 412;",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ravelinx\",\n    \"password\": \"123456\",\n    \"email\": \"drummerwilliam@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de usuarios campos faltantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ravelinx\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generación de token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set('token', jsonData.token);",
+									"",
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ravelinx\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users/auth",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generación de token usuario no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 404\"] = responseCode.code == 404;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ravelin2x\",\n    \"password\": \"bad\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users/auth",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generación de token campos faltantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ravelinx\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users/auth",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar información del usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users/me",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar información del usuario sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users/me",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar información del usuario token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users/me",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta de salud del servicio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{USERS_PATH}}/users/ping",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"users",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Routes",
+			"item": [
+				{
+					"name": "Reset",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes/reset",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de trayecto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 201\"] = responseCode.code == 201;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sourceAirportCode\": \"LAX\",\n    \"sourceCountry\": \"USA\",\n    \"destinyAirportCode\": \"BOG\",\n    \"destinyCountry\": \"CO\",\n    \"bagCost\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de trayecto que ya existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 412\"] = responseCode.code == 412;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sourceAirportCode\": \"LAX\",\n    \"sourceCountry\": \"USA\",\n    \"destinyAirportCode\": \"BOG\",\n    \"destinyCountry\": \"CO\",\n    \"bagCost\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de trayecto campos faltantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sourceAirportCode\": \"LAX\",\n    \"sourceCountry\": \"USA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de trayecto token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sourceAirportCode\": \"LAX\",\n    \"sourceCountry\": \"USA\",\n    \"destinyAirportCode\": \"BOG\",\n    \"destinyCountry\": \"CO\",\n    \"bagCost\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar trayectos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set('route_id', jsonData[0].id);",
+									"",
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes?from=LAX&to=BOG&when=2023-02-20",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "LAX"
+								},
+								{
+									"key": "to",
+									"value": "BOG"
+								},
+								{
+									"key": "when",
+									"value": "2023-02-20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar trayectos fecha invalida",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes?from=LAX&to=BOG&when=invalid",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "LAX"
+								},
+								{
+									"key": "to",
+									"value": "BOG"
+								},
+								{
+									"key": "when",
+									"value": "invalid"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar trayectos fecha token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes?from=LAX&to=BOG&when=2023-02-20",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "LAX"
+								},
+								{
+									"key": "to",
+									"value": "BOG"
+								},
+								{
+									"key": "when",
+									"value": "2023-02-20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar trayecto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes/{{route_id}}",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes",
+								"{{route_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar trayecto que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 404\"] = responseCode.code == 404;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes/432123",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes",
+								"432123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar trayecto con id que no es un numero",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes/invalid",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes",
+								"invalid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar trayecto token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes/{{route_id}}",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes",
+								"{{route_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta de salud del servicio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ROUTES_PATH}}/routes/ping",
+							"protocol": "http",
+							"host": [
+								"{{ROUTES_PATH}}"
+							],
+							"path": [
+								"routes",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Reset",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts/reset",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de publicación",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 201\"] = responseCode.code == 201;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeId\": {{route_id}},\n    \"plannedStartDate\": \"2023-02-20\",\n    \"plannedEndDate\": \"2023-02-21\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de publicación fechas invalidas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 412\"] = responseCode.code == 412;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeId\": {{route_id}},\n    \"plannedStartDate\": \"2023-02-21\",\n    \"plannedEndDate\": \"2023-02-20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de publicación campos faltantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeId\": {{route_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de publicación token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeId\": {{route_id}},\n    \"plannedStartDate\": \"2023-02-20\",\n    \"plannedEndDate\": \"2023-02-21\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar publicaciones",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set('post_id', jsonData[0].id);",
+									"",
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts?when=2023-02-20&route={{route_id}}&filter=me",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "when",
+									"value": "2023-02-20"
+								},
+								{
+									"key": "route",
+									"value": "{{route_id}}"
+								},
+								{
+									"key": "filter",
+									"value": "me"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar publicaciones fecha invalida",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts?when=invalid&route={{route_id}}&filter=me",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "when",
+									"value": "invalid"
+								},
+								{
+									"key": "route",
+									"value": "{{route_id}}"
+								},
+								{
+									"key": "filter",
+									"value": "me"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar publicaciones token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts?when=2023-02-20&route={{route_id}}&filter=me",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "when",
+									"value": "2023-02-20"
+								},
+								{
+									"key": "route",
+									"value": "{{route_id}}"
+								},
+								{
+									"key": "filter",
+									"value": "me"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar publicación",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts/{{post_id}}",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts",
+								"{{post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar publicación que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 404\"] = responseCode.code == 404;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts/12312",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts",
+								"12312"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar publicación con id que no es numero",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts/invalid",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts",
+								"invalid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar publicación token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts/{{post_id}}",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts",
+								"{{post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta de salud del servicio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{POSTS_PATH}}/posts/ping",
+							"protocol": "http",
+							"host": [
+								"{{POSTS_PATH}}"
+							],
+							"path": [
+								"posts",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Offers",
+			"item": [
+				{
+					"name": "Reset",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers/reset",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de oferta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 201\"] = responseCode.code == 201;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"postId\": 1,\n    \"description\": \"My description\",\n    \"size\": \"LARGE\",\n    \"fragile\": true,\n    \"offer\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de oferta tamaño invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 412\"] = responseCode.code == 412;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"postId\": 1,\n    \"description\": \"My description\",\n    \"size\": \"invalid\",\n    \"fragile\": true,\n    \"offer\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de oferta negativa",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 412\"] = responseCode.code == 412;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"postId\": 1,\n    \"description\": \"My description\",\n    \"size\": \"LARGE\",\n    \"fragile\": true,\n    \"offer\": -10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de oferta campos faltantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"postId\": 1,\n    \"description\": \"My description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creación de oferta token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"postId\": 1,\n    \"description\": \"My description\",\n    \"size\": \"LARGE\",\n    \"fragile\": true,\n    \"offer\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar ofertas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set('offer_id', jsonData[0].id);",
+									"",
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers?post=1&filter=me",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers"
+							],
+							"query": [
+								{
+									"key": "post",
+									"value": "1"
+								},
+								{
+									"key": "filter",
+									"value": "me"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar ofertas con post id invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers?post=invalid&filter=me",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers"
+							],
+							"query": [
+								{
+									"key": "post",
+									"value": "invalid"
+								},
+								{
+									"key": "filter",
+									"value": "me"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar ofertas token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers?post=1&filter=me",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers"
+							],
+							"query": [
+								{
+									"key": "post",
+									"value": "1"
+								},
+								{
+									"key": "filter",
+									"value": "me"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar oferta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers/{{offer_id}}",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers",
+								"{{offer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar oferta que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 404\"] = responseCode.code == 404;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers/981298123",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers",
+								"981298123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar oferta con id que no es un numero",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 400\"] = responseCode.code == 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers/invalid",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers",
+								"invalid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar oferta token invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 401\"] = responseCode.code == 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}fake",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers/{{offer_id}}",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers",
+								"{{offer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta de salud del servicio Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status should be 200\"] = responseCode.code == 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{OFFERS_PATH}}/offers/ping",
+							"protocol": "http",
+							"host": [
+								"{{OFFERS_PATH}}"
+							],
+							"path": [
+								"offers",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "route_id",
+			"value": ""
+		},
+		{
+			"key": "post_id",
+			"value": ""
+		},
+		{
+			"key": "offer_id",
+			"value": ""
+		},
+		{
+			"key": "USERS_PATH",
+			"value": "localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "ROUTES_PATH",
+			"value": "localhost:3002",
+			"type": "string"
+		},
+		{
+			"key": "POSTS_PATH",
+			"value": "localhost:3001",
+			"type": "string"
+		},
+		{
+			"key": "OFFERS_PATH",
+			"value": "localhost:3003",
+			"type": "string"
+		},
+		{
+			"key": "route_date",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,22 @@
+team: monitor
+board: https://github.com/MISW-4301-Desarrollo-Apps-en-la-Nube/entrega-1-proyecto-202311/wiki/Entregables
+user-management:
+  port: 3000
+  folder: users
+  authors:
+    - wr.ravelo
+post-management:
+  port: 3000
+  folder: posts
+  authors:
+    - wr.ravelo
+offer-management:
+  port: 3000
+  folder: offers
+  authors:
+    - wr.ravelo
+journey-management:
+  port: 3000
+  folder: routes
+  authors:
+    - wr.ravelo

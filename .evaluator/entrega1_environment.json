@@ -1,0 +1,33 @@
+{
+	"id": "c2d0113d-a53b-4e52-8c4d-ad17cbd3ca2c",
+	"name": "entrega1",
+	"values": [
+		{
+			"key": "USERS_PATH",
+			"value": "localhost:3000",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "ROUTES_PATH",
+			"value": "localhost:3002",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "POSTS_PATH",
+			"value": "localhost:3001",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "OFFERS_PATH",
+			"value": "localhost:3003",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2023-01-27T04:04:09.494Z",
+	"_postman_exported_using": "Postman/10.5.8"
+}
